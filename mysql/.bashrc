@@ -1,0 +1,1 @@
+alias mysqlc='mysql -u root -p'
