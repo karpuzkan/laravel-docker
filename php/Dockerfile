@@ -30,11 +30,6 @@ COPY ./php/cacert.pem /usr/lib/ssl/certs/cacert.pem
 ENV TZ=Turkey
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY ./apache/ssl/server.crt /etc/apache2/ssl/server.crt
-COPY ./apache/ssl/server.key /etc/apache2/ssl/server.key
-
-RUN chmod u+x /etc/apache2/ssl/server.crt
-RUN chmod u+x /etc/apache2/ssl/server.key
 RUN chmod u+x /usr/local/bin/start
 
 ADD ./php/php.ini /usr/local/etc/php
