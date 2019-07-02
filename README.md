@@ -17,7 +17,6 @@ cd laravel-docker
 cd ../
 sudo chmod 775 laravel-docker
 sudo chmod 777 laravel-docker/redis/socket
-´´´
 docker-compose -f laravel-docker/docker-compose.yml up
 ```
 
