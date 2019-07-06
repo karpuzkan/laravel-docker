@@ -128,6 +128,14 @@ services:
       - 6000:5900
     volumes:
       - /dev/shm:/dev/shm
+            
+  yarn:
+      container_name: yarn
+      build:
+          context: ./
+          dockerfile: ./yarn/Dockerfile
+      volumes: 
+      - ../:/app
 
 networks:
     frontend:
