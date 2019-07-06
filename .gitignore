@@ -1,4 +1,5 @@
 apache/conf/apache2.conf
 apache/sites-enabled/000-default.conf
+redis/socket/redis.sock
 docker-compose.yml
 docker-compose.testing.yml
