@@ -17,9 +17,29 @@ services:
     depends_on:
       - redis
       - mysql
+      - wesocket
     restart: always
     environment:
       CONTAINER_ROLE: app
+      TIME_ZONE: "Europe/Istanbul"      
+  
+  websocket:
+    container_name: websocket
+    build:
+      context: ./
+      dockerfile: ./websocket/Dockerfile
+    working_dir: /var/www/app
+    volumes:
+    - ../:/var/www/app
+    ports:
+    - 6001:6001
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - mysql
+    restart: always
+    environment:
       TIME_ZONE: "Europe/Istanbul"
 
   scheduler:
@@ -30,6 +50,7 @@ services:
     working_dir: /var/www/app
     depends_on:
       - laravel
+      - wesocket
     volumes:
     - ../:/var/www/app
     networks:
@@ -47,6 +68,7 @@ services:
     working_dir: /var/www/app
     depends_on:
     - laravel
+    - wesocket
     volumes:
     - ../:/var/www/app
     networks:
