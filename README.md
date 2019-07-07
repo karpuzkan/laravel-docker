@@ -4,8 +4,9 @@
 - queue 
 - schedule
 - websocket 
-- firefox 
-- chrome 
+- firefox - with vnc
+- chrome - with vnc
+- yarn
 - phpmyadmin
 
 ```

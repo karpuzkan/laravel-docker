@@ -13,15 +13,20 @@ services:
     ports:
       - 80:80
     networks:
-      - backend
+      backend:
+      frontend:
+        aliases:
+          - app.test
     depends_on:
       - redis
       - mysql
-      - wesocket
+      - chrome
+      - firefox
+      - websocket
     restart: always
     environment:
       CONTAINER_ROLE: app
-      TIME_ZONE: "Europe/Istanbul"      
+      TIME_ZONE: "Europe/Istanbul"
   
   websocket:
     container_name: websocket
@@ -41,7 +46,7 @@ services:
     restart: always
     environment:
       TIME_ZONE: "Europe/Istanbul"
-
+      
   scheduler:
     container_name: scheduler
     build:
@@ -50,7 +55,7 @@ services:
     working_dir: /var/www/app
     depends_on:
       - laravel
-      - wesocket
+      - websocket
     volumes:
     - ../:/var/www/app
     networks:
@@ -67,8 +72,8 @@ services:
       dockerfile: ./php/Dockerfile
     working_dir: /var/www/app
     depends_on:
-    - laravel
-    - wesocket
+      - laravel
+      - websocket
     volumes:
     - ../:/var/www/app
     networks:
@@ -105,5 +110,55 @@ services:
     volumes:
       - ./redis/socket:/tmp/docker
 
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+    - 8080:80
+    environment:
+    - PMA_HOST=mysql
+    - PMA_PORT=3306
+    networks:
+      - backend
+
+  chrome:
+    container_name: chrome
+    build:
+      context: ./
+      dockerfile: ./chrome/Dockerfile
+    networks:
+      - frontend
+    external_links:
+      - app.test:lupofis_laravel
+    ports:
+      - 4444:4444
+      - 5900:5900
+    volumes:
+      - /dev/shm:/dev/shm
+
+  firefox:
+    container_name: firefox
+    build:
+      context: ./
+      dockerfile: ./firefox/Dockerfile
+    networks:
+      - frontend
+    external_links:
+      - app.test:lupofis_laravel
+    ports:
+      - 5555:4444
+      - 6000:5900
+    volumes:
+      - /dev/shm:/dev/shm
+            
+  yarn:
+      container_name: yarn
+      build:
+          context: ./
+          dockerfile: ./yarn/Dockerfile
+      volumes: 
+      - ../:/app
+      
 networks:
+    frontend:
     backend:
